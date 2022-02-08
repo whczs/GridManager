@@ -5,7 +5,7 @@
  */
 import { FAKE_TABLE_HEAD_KEY } from '@common/constants';
 import { CLASS_FILTER } from './constants';
-import { MOUSE_DOWN, MOUSE_UP, MOUSE_CLICK, createEventsObj } from '@common/events';
+import { MOUSE_DOWN, MOUSE_UP, MOUSE_CLICK, createEventsObj, KEY_UP} from '@common/events';
 import { EventMap } from 'typings/types';
 
 export const getEvent = (_: string, scope: string): EventMap => {
@@ -27,7 +27,10 @@ export const getEvent = (_: string, scope: string): EventMap => {
         checkboxAction: createEventsObj(MOUSE_CLICK, scope, `${filterSign} .gm-checkbox-input`),
 
         // 单选框点选
-        radioAction: createEventsObj(MOUSE_CLICK, scope, `${filterSign} .gm-radio-input`)
+        radioAction: createEventsObj(MOUSE_CLICK, scope, `${filterSign} .gm-radio-input`),
+
+				// todo 输入框监控enter筛选
+				enterFilter: createEventsObj(KEY_UP, scope, `${filterSign} .filter-input`)
     };
 };
 

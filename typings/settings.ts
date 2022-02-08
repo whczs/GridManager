@@ -5,7 +5,8 @@ export interface FilterObject{
 		text: string;
 	}>;
 	selected: string;
-	isMultiple: boolean
+	isMultiple: boolean;
+	filterInput: boolean;
 }
 interface ThTemplate {
 	(): string;

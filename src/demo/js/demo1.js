@@ -624,6 +624,17 @@ const demo1 = {
                         return TYPE_MAP[type];
                     }
                 }, {
+									key: 'type1',
+									text: '博文分类111',
+									align: 'left',
+									width: '150px',
+									sorting: '',
+									disableMoveRow: true,
+									// 表头筛选条件, 该值由用户操作后会将选中的值以{key: value}的形式覆盖至query参数内。非必设项
+									filter: {
+											filterInput: true
+									}
+							}, {
                     key: 'info',
                     remind: 'the info',
                     width: '100px',

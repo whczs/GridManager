@@ -31,7 +31,7 @@ class Filter {
         const tableSelector = getQuerySelector(_);
 
         eventMap[_] = getEvent(_, tableSelector);
-        const { toggle, close, submit, reset, checkboxAction, radioAction } = eventMap[_];
+        const { toggle, close, submit, reset, checkboxAction, radioAction, enterFilter} = eventMap[_];
 
         // 事件: 切换可视状态
         jTool(toggle[TARGET]).on(toggle[EVENTS], toggle[SELECTOR], function (e: MouseEvent) {
@@ -134,6 +134,27 @@ class Filter {
                 updateRadioState(jTool(item).find('.gm-radio'), this === item.querySelector('.gm-radio-input'));
             });
         });
+
+				// todo 输入框筛选 监控enter
+				jTool(enterFilter[TARGET]).on(enterFilter[EVENTS], enterFilter[SELECTOR], function (event={which:1}) {
+					if (event.which !== 13) return;
+					const $action = jTool(this);
+					const $filterCon = $action.closest(`.${CLASS_FILTER_CONTENT}`);
+					const $th = $filterCon.closest('th');
+					const thName = getThName($th);
+				
+					const settings = getSettings(_);
+					settings.columnMap[thName].filter.selected = $action.val();
+					settings.pageData[settings.currentPageKey] = 1;
+					extend(settings.query, {
+						[thName]: $action.val()
+					});
+					setSettings(settings);
+					_this.update($th, settings.columnMap[thName].filter);
+					core.refresh(_);
+					$filterCon.hide();
+					jTool(close[TARGET]).off(close[EVENTS]);
+				});
     }
 
     /**
@@ -147,7 +168,10 @@ class Filter {
         const tableWrapHeight = getWrap(settings._).height();
         let listHtml = '';
         columnFilter.selected = columnFilter.selected || '';
-        columnFilter.option.forEach(item => {
+				if(columnFilter.filterInput){
+					listHtml += `<input class="filter-input" name="filter-input" placeholder="回车查询">`;
+				}else{
+					columnFilter.option.forEach(item => {
             let selectedList = columnFilter.selected.split(FILTER_SELECTED_FLAG);
             selectedList = selectedList.map((s: string) => {
                 return s.trim();
@@ -164,11 +188,14 @@ class Filter {
             } else {
                 listHtml += `<li class="filter-radio">${checkbox.getRadioTpl(parseData)}</li>`;
             }
-        });
+        	});
+				}
+
 
 		// @ts-ignore
         return {
             icon: columnFilter.selected ? ` ${CLASS_FILTER_SELECTED}` : '',
+						filterIcon: columnFilter.filterInput?'gm-icon-search':'gm-icon-filter',
             style: `style="max-height: ${tableWrapHeight - 100 + PX}"`,
             ok: i18n(settings, 'ok'),
             reset: i18n(settings, 'reset'),
