@@ -1,4 +1,7 @@
 # GridManager.js
+> 根据作者[写个程序换个饼](https://github.com/baukh789)源码[GridManager](https://github.com/baukh789/GridManager)增加表头输入框筛选功能
+![image](src/images/20220208170513.png)
+
 > 快速、灵活的对Table标签进行实例化，让Table标签充满活力。
 
 ![image](https://s2.ax1x.com/2019/04/16/AxA4xK.png)
