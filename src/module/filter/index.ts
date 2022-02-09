@@ -169,7 +169,7 @@ class Filter {
         let listHtml = '';
         columnFilter.selected = columnFilter.selected || '';
 				if(columnFilter.filterInput){
-					listHtml += `<input class="filter-input" name="filter-input" placeholder="回车查询">`;
+					listHtml += `<input class="filter-input" name="filter-input" placeholder="回车查询" autocomplete="off">`;
 				}else{
 					columnFilter.option.forEach(item => {
             let selectedList = columnFilter.selected.split(FILTER_SELECTED_FLAG);
